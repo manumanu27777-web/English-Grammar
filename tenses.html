@@ -1,0 +1,529 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mastering English Tenses</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&family=Poppins:wght@400;500;600;700&display=swap');
+        
+        body {
+            font-family: 'Nunito', sans-serif;
+            background-color: #f8fafc;
+            color: #1e293b;
+        }
+
+        h1, h2, h3, h4, .font-poppins {
+            font-family: 'Poppins', sans-serif;
+        }
+
+        /* Wavy Animation */
+        @keyframes dash {
+            to {
+                stroke-dashoffset: -40;
+            }
+        }
+        .animate-wave {
+            stroke-dasharray: 40;
+            animation: dash 2s linear infinite;
+        }
+
+        /* Flip Card CSS for Mistakes */
+        .perspective { perspective: 1000px; }
+        .preserve-3d { transform-style: preserve-3d; }
+        .backface-hidden { backface-visibility: hidden; }
+        .rotate-y-180 { transform: rotateY(180deg); }
+        .flip-card-inner { transition: transform 0.6s cubic-bezier(0.4, 0.2, 0.2, 1); }
+        .flip-card:hover .flip-card-inner, .flip-card.flipped .flip-card-inner { transform: rotateY(180deg); }
+
+        .gradient-text {
+            background-clip: text;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar { width: 8px; height: 8px; }
+        ::-webkit-scrollbar-track { background: #f1f1f1; border-radius: 4px; }
+        ::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 4px; }
+        ::-webkit-scrollbar-thumb:hover { background: #94a3b8; }
+    </style>
+</head>
+<body class="antialiased">
+
+    <!-- Header -->
+    <header class="bg-slate-900 text-white py-16 px-6 text-center relative overflow-hidden">
+        <div class="absolute inset-0 opacity-10">
+            <svg class="h-full w-full" xmlns="http://www.w3.org/2000/svg">
+                <defs>
+                    <pattern id="grid" width="40" height="40" patternUnits="userSpaceOnUse">
+                        <path d="M 40 0 L 0 0 0 40" fill="none" stroke="white" stroke-width="1"/>
+                    </pattern>
+                </defs>
+                <rect width="100%" height="100%" fill="url(#grid)" />
+            </svg>
+        </div>
+        <div class="relative z-10 max-w-4xl mx-auto">
+            <span class="bg-blue-500 text-white text-xs font-bold px-3 py-1 rounded-full uppercase tracking-wider">Ultimate Guide</span>
+            <h1 class="text-4xl md:text-6xl font-bold mt-4 mb-4 bg-gradient-to-r from-blue-400 via-indigo-400 to-purple-400 gradient-text">Mastering English Tenses</h1>
+            <p class="text-xl text-slate-300 mb-8 max-w-2xl mx-auto">A visual, interactive cheat sheet to understand the 12 tenses, common mistakes, and the framework to choose the perfect tense every time.</p>
+        </div>
+    </header>
+
+    <!-- 1. The Interactive Timeline Visualizer -->
+    <section class="py-12 px-4 max-w-6xl mx-auto">
+        <div class="text-center mb-8">
+            <h2 class="text-3xl font-bold text-slate-800">The Visual Time Framework</h2>
+            <p class="text-slate-600 mt-2">See how different aspects act on the timeline. Click the aspects below to visualize.</p>
+        </div>
+
+        <div class="bg-white rounded-2xl shadow-xl p-6 md:p-10 border border-slate-100">
+            <!-- Aspect Toggles -->
+            <div class="flex flex-wrap justify-center gap-3 mb-10" id="aspect-toggles">
+                <button onclick="updateTimeline('simple')" class="timeline-btn active bg-blue-100 text-blue-700 border-2 border-blue-500 px-5 py-2 rounded-xl font-semibold transition-all hover:bg-blue-200" data-aspect="simple">
+                    <i class="fa-solid fa-xmark mr-2"></i> Simple
+                </button>
+                <button onclick="updateTimeline('continuous')" class="timeline-btn bg-slate-100 text-slate-600 border-2 border-transparent px-5 py-2 rounded-xl font-semibold transition-all hover:bg-slate-200" data-aspect="continuous">
+                    <i class="fa-solid fa-water mr-2"></i> Continuous
+                </button>
+                <button onclick="updateTimeline('perfect')" class="timeline-btn bg-slate-100 text-slate-600 border-2 border-transparent px-5 py-2 rounded-xl font-semibold transition-all hover:bg-slate-200" data-aspect="perfect">
+                    <i class="fa-solid fa-brackets-curly mr-2"></i> Perfect
+                </button>
+                <button onclick="updateTimeline('perfect-continuous')" class="timeline-btn bg-slate-100 text-slate-600 border-2 border-transparent px-5 py-2 rounded-xl font-semibold transition-all hover:bg-slate-200" data-aspect="perfect-continuous">
+                    <i class="fa-solid fa-link mr-2"></i> Perfect Continuous
+                </button>
+            </div>
+
+            <!-- SVG Timeline -->
+            <div class="relative w-full overflow-x-auto overflow-y-hidden pb-4">
+                <svg id="timeline-svg" viewBox="0 0 900 250" class="w-full min-w-[700px] h-auto drop-shadow-md bg-slate-50 rounded-xl">
+                    <!-- Base Grid & Labels -->
+                    <line x1="50" y1="120" x2="850" y2="120" stroke="#cbd5e1" stroke-width="4" stroke-linecap="round"/>
+                    
+                    <!-- Time Zone Zones -->
+                    <rect x="50" y="40" width="250" height="160" fill="#eff6ff" rx="10" class="opacity-50"/>
+                    <rect x="325" y="40" width="250" height="160" fill="#f0fdf4" rx="10" class="opacity-50"/>
+                    <rect x="600" y="40" width="250" height="160" fill="#fffbeb" rx="10" class="opacity-50"/>
+
+                    <text x="175" y="220" text-anchor="middle" font-family="Poppins" font-weight="700" font-size="18" fill="#3b82f6">PAST</text>
+                    <text x="450" y="220" text-anchor="middle" font-family="Poppins" font-weight="700" font-size="18" fill="#22c55e">PRESENT</text>
+                    <text x="725" y="220" text-anchor="middle" font-family="Poppins" font-weight="700" font-size="18" fill="#f59e0b">FUTURE</text>
+
+                    <!-- Present Line (Now) -->
+                    <line x1="450" y1="70" x2="450" y2="170" stroke="#22c55e" stroke-width="2" stroke-dasharray="4"/>
+                    <text x="450" y="60" text-anchor="middle" font-family="Nunito" font-size="14" fill="#22c55e">NOW</text>
+
+                    <!-- Dynamic Group for Simple (X) -->
+                    <g id="layer-simple" class="transition-opacity duration-500">
+                        <!-- Past X -->
+                        <path d="M160 105 L190 135 M190 105 L160 135" stroke="#ef4444" stroke-width="5" stroke-linecap="round"/>
+                        <!-- Present X -->
+                        <path d="M435 105 L465 135 M465 105 L435 135" stroke="#ef4444" stroke-width="5" stroke-linecap="round"/>
+                        <!-- Future X -->
+                        <path d="M710 105 L740 135 M740 105 L710 135" stroke="#ef4444" stroke-width="5" stroke-linecap="round"/>
+                    </g>
+
+                    <!-- Dynamic Group for Continuous (Wavy) -->
+                    <g id="layer-continuous" class="transition-opacity duration-500 opacity-0">
+                        <!-- Past Wavy -->
+                        <path d="M 120 120 Q 135 100, 150 120 T 180 120 T 210 120 T 240 120" fill="none" stroke="#3b82f6" stroke-width="4" stroke-linecap="round" class="animate-wave"/>
+                        <!-- Present Wavy -->
+                        <path d="M 390 120 Q 405 100, 420 120 T 450 120 T 480 120 T 510 120" fill="none" stroke="#22c55e" stroke-width="4" stroke-linecap="round" class="animate-wave"/>
+                        <!-- Future Wavy -->
+                        <path d="M 660 120 Q 675 100, 690 120 T 720 120 T 750 120 T 780 120" fill="none" stroke="#f59e0b" stroke-width="4" stroke-linecap="round" class="animate-wave"/>
+                        <circle cx="240" cy="120" r="4" fill="#3b82f6"/><circle cx="510" cy="120" r="4" fill="#22c55e"/><circle cx="780" cy="120" r="4" fill="#f59e0b"/>
+                    </g>
+
+                    <!-- Dynamic Group for Perfect (Bracket) -->
+                    <g id="layer-perfect" class="transition-opacity duration-500 opacity-0">
+                        <!-- Past Perfect Bracket -->
+                        <path d="M 100 130 v -20 h 60 v 20" fill="none" stroke="#8b5cf6" stroke-width="4" stroke-linejoin="round"/>
+                        <circle cx="160" cy="120" r="6" fill="#8b5cf6"/>
+                        <!-- Present Perfect Bracket -->
+                        <path d="M 325 130 v -20 h 125 v 20" fill="none" stroke="#8b5cf6" stroke-width="4" stroke-linejoin="round"/>
+                        <circle cx="450" cy="120" r="6" fill="#8b5cf6"/>
+                        <!-- Future Perfect Bracket -->
+                        <path d="M 450 130 v -20 h 270 v 20" fill="none" stroke="#8b5cf6" stroke-width="4" stroke-linejoin="round"/>
+                        <circle cx="720" cy="120" r="6" fill="#8b5cf6"/>
+                    </g>
+
+                    <!-- Dynamic Group for Perfect Continuous (Bracket + Wavy) -->
+                    <g id="layer-perfect-continuous" class="transition-opacity duration-500 opacity-0">
+                        <!-- Present Perfect Cont -->
+                        <path d="M 250 135 v -25 h 200 v 25" fill="none" stroke="#ec4899" stroke-width="3" stroke-dasharray="6"/>
+                        <path d="M 250 120 Q 265 105, 280 120 T 310 120 T 340 120 T 370 120 T 400 120 T 430 120" fill="none" stroke="#ec4899" stroke-width="4" class="animate-wave"/>
+                        <circle cx="440" cy="120" r="6" fill="#ec4899"/>
+                        <!-- General explanatory text since drawing all 3 gets messy -->
+                        <text x="450" y="160" text-anchor="middle" font-family="Nunito" font-style="italic" font-size="14" fill="#ec4899">Ongoing duration leading up to a specific point</text>
+                    </g>
+                </svg>
+            </div>
+            
+            <div id="aspect-description" class="mt-6 text-center text-lg font-medium text-slate-700 bg-slate-50 p-4 rounded-xl">
+                <strong>Simple:</strong> Just the action itself. Habits, facts, or completed events.
+            </div>
+        </div>
+    </section>
+
+    <!-- 2. The 12 Tenses Data Table / Grid -->
+    <section class="py-12 bg-white px-4">
+        <div class="max-w-7xl mx-auto">
+            <div class="text-center mb-10">
+                <h2 class="text-3xl font-bold text-slate-800">The 12 Tenses Cheat Sheet</h2>
+                <p class="text-slate-600 mt-2">Filter by time zone to explore the formulas and memory tips.</p>
+            </div>
+
+            <!-- Tabs -->
+            <div class="flex justify-center mb-8 border-b border-slate-200">
+                <button onclick="showTenseTab('present')" id="tab-present" class="tense-tab px-6 py-3 text-lg font-semibold border-b-4 border-green-500 text-green-600 transition-colors">Present</button>
+                <button onclick="showTenseTab('past')" id="tab-past" class="tense-tab px-6 py-3 text-lg font-semibold border-b-4 border-transparent text-slate-500 hover:text-blue-500 transition-colors">Past</button>
+                <button onclick="showTenseTab('future')" id="tab-future" class="tense-tab px-6 py-3 text-lg font-semibold border-b-4 border-transparent text-slate-500 hover:text-orange-500 transition-colors">Future</button>
+            </div>
+
+            <!-- Tense Cards Container -->
+            <div id="tenses-container" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                <!-- Injected via JS -->
+            </div>
+        </div>
+    </section>
+
+    <!-- 3. Signal Words & The 3-Question Framework -->
+    <section class="py-12 px-4 bg-slate-50">
+        <div class="max-w-6xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-10">
+            
+            <!-- Signal Words -->
+            <div class="bg-white p-8 rounded-2xl shadow-lg border border-slate-100">
+                <div class="flex items-center gap-3 mb-6">
+                    <div class="bg-yellow-100 text-yellow-600 p-3 rounded-lg"><i class="fa-solid fa-brain text-xl"></i></div>
+                    <h3 class="text-2xl font-bold">Signal Words Cheat Sheet</h3>
+                </div>
+                <div class="space-y-4 max-h-96 overflow-y-auto pr-2" id="signal-words-list">
+                    <!-- Populated by JS -->
+                </div>
+            </div>
+
+            <!-- Decision Framework -->
+            <div class="bg-gradient-to-br from-indigo-600 to-blue-700 p-8 rounded-2xl shadow-lg text-white">
+                <h3 class="text-2xl font-bold mb-6"><i class="fa-solid fa-map text-blue-200 mr-2"></i>The 3-Question Framework</h3>
+                
+                <div class="space-y-6">
+                    <div class="bg-white/10 p-4 rounded-xl border border-white/20 backdrop-blur-sm">
+                        <div class="font-bold text-blue-200 mb-1">1. WHEN? (Time Zone)</div>
+                        <p>Is the action in the Past, Present, or Future?</p>
+                    </div>
+                    
+                    <div class="bg-white/10 p-4 rounded-xl border border-white/20 backdrop-blur-sm">
+                        <div class="font-bold text-blue-200 mb-1">2. WHAT TYPE? (Aspect)</div>
+                        <ul class="list-disc list-inside text-sm mt-2 space-y-1 text-blue-50">
+                            <li><strong>Simple:</strong> Just the fact / routine.</li>
+                            <li><strong>Continuous:</strong> In progress / temporary.</li>
+                            <li><strong>Perfect:</strong> Already done / connection to another time.</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="bg-white/10 p-4 rounded-xl border border-white/20 backdrop-blur-sm">
+                        <div class="font-bold text-blue-200 mb-1">3. SIGNAL WORDS? (Clues)</div>
+                        <p>Look for triggers like "yesterday", "since", "by tomorrow".</p>
+                    </div>
+
+                    <div class="mt-6 p-4 bg-yellow-400 text-slate-900 rounded-xl font-bold flex items-center shadow-md">
+                        <i class="fa-solid fa-hand text-xl mr-3"></i>
+                        <span>The "STOP & THINK" Method: Pause, check the 3 questions, pick your tense, GO!</span>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </section>
+
+    <!-- Flowchart -->
+    <section class="py-12 bg-white px-4 border-t border-slate-100">
+        <div class="max-w-5xl mx-auto text-center">
+            <h2 class="text-3xl font-bold text-slate-800 mb-8"><i class="fa-solid fa-sitemap mr-3 text-indigo-500"></i>Quick Decision Flowchart</h2>
+            
+            <div class="flex flex-col md:flex-row justify-center items-start gap-4 md:gap-8 bg-slate-50 p-6 md:p-10 rounded-2xl border border-slate-200">
+                <!-- PAST -->
+                <div class="flex-1 w-full bg-blue-50 border-t-4 border-blue-500 p-4 rounded-b-xl rounded-tl-xl shadow-sm">
+                    <h4 class="font-bold text-blue-700 text-xl mb-4 border-b border-blue-200 pb-2">PAST</h4>
+                    <ul class="text-left space-y-4 text-sm">
+                        <li><span class="block font-bold text-slate-800">Completed?</span> → <span class="bg-blue-200 text-blue-800 px-2 py-0.5 rounded text-xs">Simple Past</span></li>
+                        <li><span class="block font-bold text-slate-800">Still going then?</span> → <span class="bg-blue-200 text-blue-800 px-2 py-0.5 rounded text-xs">Past Cont.</span></li>
+                        <li><span class="block font-bold text-slate-800">Happened before another past?</span> → <span class="bg-blue-200 text-blue-800 px-2 py-0.5 rounded text-xs">Past Perfect</span></li>
+                    </ul>
+                </div>
+
+                <!-- PRESENT -->
+                <div class="flex-1 w-full bg-green-50 border-t-4 border-green-500 p-4 rounded-b-xl shadow-sm">
+                    <h4 class="font-bold text-green-700 text-xl mb-4 border-b border-green-200 pb-2">PRESENT</h4>
+                    <ul class="text-left space-y-4 text-sm">
+                        <li><span class="block font-bold text-slate-800">Habit/Fact?</span> → <span class="bg-green-200 text-green-800 px-2 py-0.5 rounded text-xs">Simple Present</span></li>
+                        <li><span class="block font-bold text-slate-800">Happening NOW?</span> → <span class="bg-green-200 text-green-800 px-2 py-0.5 rounded text-xs">Present Cont.</span></li>
+                        <li><span class="block font-bold text-slate-800">Connected to present?</span> → <span class="bg-green-200 text-green-800 px-2 py-0.5 rounded text-xs">Present Perfect</span></li>
+                    </ul>
+                </div>
+
+                <!-- FUTURE -->
+                <div class="flex-1 w-full bg-orange-50 border-t-4 border-orange-500 p-4 rounded-b-xl rounded-tr-xl shadow-sm">
+                    <h4 class="font-bold text-orange-700 text-xl mb-4 border-b border-orange-200 pb-2">FUTURE</h4>
+                    <ul class="text-left space-y-4 text-sm">
+                        <li><span class="block font-bold text-slate-800">Will it happen?</span> → <span class="bg-orange-200 text-orange-800 px-2 py-0.5 rounded text-xs">Simple Future</span></li>
+                        <li><span class="block font-bold text-slate-800">Will be in progress?</span> → <span class="bg-orange-200 text-orange-800 px-2 py-0.5 rounded text-xs">Future Cont.</span></li>
+                        <li><span class="block font-bold text-slate-800">Completed before a future time?</span> → <span class="bg-orange-200 text-orange-800 px-2 py-0.5 rounded text-xs">Future Perfect</span></li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="mt-8 text-lg font-medium text-slate-600 bg-indigo-50 inline-block px-6 py-3 rounded-full border border-indigo-100">
+                <i class="fa-solid fa-key text-yellow-500 mr-2"></i> Golden Rule: <strong class="text-indigo-800">Time + Aspect = Tense</strong>
+            </div>
+        </div>
+    </section>
+
+    <!-- 4. Top 7 Mistakes Flashcards -->
+    <section class="py-16 bg-slate-100 px-4">
+        <div class="max-w-6xl mx-auto">
+            <div class="text-center mb-10">
+                <h2 class="text-3xl font-bold text-slate-800">Top 7 Common Mistakes</h2>
+                <p class="text-slate-600 mt-2">Hover or tap cards to reveal the correction and the golden tip.</p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6" id="mistakes-container">
+                <!-- Injected via JS -->
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-slate-900 text-slate-400 py-8 text-center">
+        <p class="max-w-2xl mx-auto px-4">Practice noticing signal words in sentences you read and hear. Choosing the right tense will soon become automatic and instinctive!</p>
+    </footer>
+
+    <!-- JavaScript Data & Logic -->
+    <script>
+        // --- DATA ---
+        const tensesData = [
+            // PRESENT
+            { time: 'present', aspect: 'Simple', name: 'Simple Present', formula: 'Subject + V1 (s/es)', usage: 'Habits, facts, routines', example: 'She drinks tea every morning.', tip: '"Every day" actions' },
+            { time: 'present', aspect: 'Continuous', name: 'Present Continuous', formula: 'Subject + am/is/are + V1-ing', usage: 'Action happening right now', example: 'She is drinking tea now.', tip: '"Right now" actions' },
+            { time: 'present', aspect: 'Perfect', name: 'Present Perfect', formula: 'Subject + has/have + V3', usage: 'Past action with present result', example: 'She has drunk her tea.', tip: '"Already done" actions' },
+            { time: 'present', aspect: 'Perfect Continuous', name: 'Present Perf. Cont.', formula: 'Subject + has/have + been + V1-ing', usage: 'Action started in past, still ongoing', example: 'She has been drinking tea for an hour.', tip: '"Started then, still now"' },
+            
+            // PAST
+            { time: 'past', aspect: 'Simple', name: 'Simple Past', formula: 'Subject + V2 (ed)', usage: 'Completed action in the past', example: 'She drank tea yesterday.', tip: '"It\'s done, it\'s over"' },
+            { time: 'past', aspect: 'Continuous', name: 'Past Continuous', formula: 'Subject + was/were + V1-ing', usage: 'Action in progress at a past moment', example: 'She was drinking tea when I called.', tip: '"Was happening then"' },
+            { time: 'past', aspect: 'Perfect', name: 'Past Perfect', formula: 'Subject + had + V3', usage: 'Action completed before another past action', example: 'She had drunk tea before he arrived.', tip: '"The earlier of two past events"' },
+            { time: 'past', aspect: 'Perfect Continuous', name: 'Past Perf. Cont.', formula: 'Subject + had + been + V1-ing', usage: 'Ongoing action ended before another past event', example: 'She had been drinking tea for an hour before he arrived.', tip: '"Was going on, then stopped"' },
+            
+            // FUTURE
+            { time: 'future', aspect: 'Simple', name: 'Simple Future', formula: 'Subject + will + V1', usage: 'Decision or prediction about the future', example: 'She will drink tea tomorrow.', tip: '"Will happen"' },
+            { time: 'future', aspect: 'Continuous', name: 'Future Continuous', formula: 'Subject + will + be + V1-ing', usage: 'Action in progress at a future moment', example: 'She will be drinking tea at 8 AM.', tip: '"Will be happening then"' },
+            { time: 'future', aspect: 'Perfect', name: 'Future Perfect', formula: 'Subject + will + have + V3', usage: 'Action completed before a future time', example: 'She will have drunk her tea by 9 AM.', tip: '"Will be done by then"' },
+            { time: 'future', aspect: 'Perfect Continuous', name: 'Future Perf. Cont.', formula: 'Subject + will + have + been + V1-ing', usage: 'Ongoing action continuing up to a future point', example: 'She will have been drinking tea for an hour by 9 AM.', tip: '"Will still be going on until then"' },
+        ];
+
+        const signalWords = [
+            { words: "every day, always, usually", tense: "Simple Present", color: "bg-green-100 text-green-800" },
+            { words: "now, at the moment, currently", tense: "Present Continuous", color: "bg-green-100 text-green-800" },
+            { words: "just, already, yet, ever, never", tense: "Present Perfect", color: "bg-green-100 text-green-800" },
+            { words: "since, for (ongoing)", tense: "Present Perfect Continuous", color: "bg-green-100 text-green-800" },
+            { words: "yesterday, ago, last, in 2010", tense: "Simple Past", color: "bg-blue-100 text-blue-800" },
+            { words: "while, when (background action)", tense: "Past Continuous", color: "bg-blue-100 text-blue-800" },
+            { words: "before, by the time, after", tense: "Past Perfect", color: "bg-blue-100 text-blue-800" },
+            { words: "tomorrow, next week, soon", tense: "Simple Future", color: "bg-orange-100 text-orange-800" },
+            { words: "at this time tomorrow", tense: "Future Continuous", color: "bg-orange-100 text-orange-800" },
+            { words: "by tomorrow, by next year", tense: "Future Perfect", color: "bg-orange-100 text-orange-800" }
+        ];
+
+        const mistakes = [
+            {
+                title: "Mistake 1",
+                desc: "Using Present Perfect with Past Time Words",
+                wrong: "I have seen that movie yesterday.",
+                correct: "I saw that movie yesterday.",
+                tip: "If you can ask 'When?' and get a specific past time → use Simple Past."
+            },
+            {
+                title: "Mistake 2",
+                desc: "Simple Present vs. Continuous Confusion",
+                wrong: "Look! It rains outside.",
+                correct: "Look! It is raining outside.",
+                tip: "Adverbs like always → Simple Present. Words like look, now → Present Continuous."
+            },
+            {
+                title: "Mistake 3",
+                desc: "Mixing Tenses in One Sentence",
+                wrong: "Yesterday, I go to the park and will play football.",
+                correct: "Yesterday, I went to the park and played football.",
+                tip: "Pick your time zone (past/present/future) and stay consistent."
+            },
+            {
+                title: "Mistake 4",
+                desc: "Wrong Tense in Reported Speech",
+                wrong: "She said, 'I go to the store.' → She said that she goes...",
+                correct: "She said that she went to the store.",
+                tip: "Think of it as a 'backshift' — present → past, past → past perfect."
+            },
+            {
+                title: "Mistake 5",
+                desc: "Using 'will' After 'if'",
+                wrong: "If I will see him, I will tell him.",
+                correct: "If I see him, I will tell him.",
+                tip: "'If + Present → will + V1' is the golden rule for first conditionals."
+            },
+            {
+                title: "Mistake 6",
+                desc: "Simple Past Instead of Past Perfect",
+                wrong: "When I arrived, he left.",
+                correct: "When I arrived, he had left.",
+                tip: "The action that happened first → Past Perfect. The second → Simple Past."
+            },
+            {
+                title: "Mistake 7",
+                desc: "Using 'since/for' with Simple Present",
+                wrong: "I am ill for two weeks.",
+                correct: "I have been ill for two weeks.",
+                tip: "Since/for used with ongoing states need Present Perfect Continuous."
+            }
+        ];
+
+        // --- RENDER FUNCTIONS ---
+
+        // Render Signal Words
+        const signalList = document.getElementById('signal-words-list');
+        signalWords.forEach(sw => {
+            signalList.innerHTML += `
+                <div class="flex flex-col sm:flex-row sm:items-center justify-between border-b border-slate-100 pb-3 last:border-0">
+                    <span class="font-medium text-slate-700 italic">"${sw.words}"</span>
+                    <span class="mt-2 sm:mt-0 px-3 py-1 rounded-full text-xs font-bold ${sw.color}">${sw.tense}</span>
+                </div>
+            `;
+        });
+
+        // Render Mistakes as Flip Cards
+        const mistakesContainer = document.getElementById('mistakes-container');
+        mistakes.forEach(m => {
+            mistakesContainer.innerHTML += `
+                <div class="flip-card perspective h-64 w-full cursor-pointer group" onclick="this.classList.toggle('flipped')">
+                    <div class="flip-card-inner preserve-3d relative w-full h-full text-center">
+                        <!-- Front -->
+                        <div class="backface-hidden absolute w-full h-full bg-white rounded-2xl shadow-md border-t-4 border-red-400 p-6 flex flex-col justify-center items-center group-hover:shadow-lg transition-shadow">
+                            <div class="text-red-500 mb-2"><i class="fa-solid fa-circle-xmark text-3xl"></i></div>
+                            <h4 class="font-bold text-slate-800 mb-2">${m.title}</h4>
+                            <p class="text-sm text-slate-500 mb-3">${m.desc}</p>
+                            <div class="bg-red-50 text-red-700 p-2 rounded text-sm italic w-full">"${m.wrong}"</div>
+                            <div class="mt-4 text-xs text-slate-400 uppercase tracking-wide"><i class="fa-solid fa-hand-pointer mr-1"></i>Tap to flip</div>
+                        </div>
+                        <!-- Back -->
+                        <div class="backface-hidden rotate-y-180 absolute w-full h-full bg-slate-800 rounded-2xl shadow-md border-t-4 border-green-400 p-6 flex flex-col justify-center items-center text-white">
+                            <div class="text-green-400 mb-2"><i class="fa-solid fa-circle-check text-3xl"></i></div>
+                            <div class="bg-green-500/20 text-green-200 p-2 rounded text-sm font-medium w-full mb-4">"${m.correct}"</div>
+                            <div class="bg-slate-700 text-slate-300 p-3 rounded text-xs leading-relaxed border border-slate-600">
+                                <span class="font-bold text-yellow-400 block mb-1">TIP:</span> ${m.tip}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            `;
+        });
+
+        // Tab Logic for 12 Tenses
+        const tensesColors = {
+            present: { border: 'border-green-500', text: 'text-green-600', hover: 'hover:text-green-500', bg: 'bg-green-50', badge: 'bg-green-200 text-green-800' },
+            past: { border: 'border-blue-500', text: 'text-blue-600', hover: 'hover:text-blue-500', bg: 'bg-blue-50', badge: 'bg-blue-200 text-blue-800' },
+            future: { border: 'border-orange-500', text: 'text-orange-600', hover: 'hover:text-orange-500', bg: 'bg-orange-50', badge: 'bg-orange-200 text-orange-800' },
+        };
+
+        function showTenseTab(timeZone) {
+            // Update Tab Styles
+            ['present', 'past', 'future'].forEach(tz => {
+                const tab = document.getElementById(`tab-${tz}`);
+                const colorData = tensesColors[tz];
+                
+                if (tz === timeZone) {
+                    tab.className = `tense-tab px-6 py-3 text-lg font-semibold border-b-4 ${colorData.border} ${colorData.text} transition-colors`;
+                } else {
+                    tab.className = `tense-tab px-6 py-3 text-lg font-semibold border-b-4 border-transparent text-slate-500 ${colorData.hover} transition-colors`;
+                }
+            });
+
+            // Render Cards
+            const container = document.getElementById('tenses-container');
+            container.innerHTML = '';
+            
+            const filteredTenses = tensesData.filter(t => t.time === timeZone);
+            const theme = tensesColors[timeZone];
+
+            filteredTenses.forEach(t => {
+                container.innerHTML += `
+                    <div class="bg-white rounded-xl shadow-sm border border-slate-200 overflow-hidden hover:shadow-md transition-shadow flex flex-col">
+                        <div class="${theme.bg} p-4 border-b border-slate-200">
+                            <span class="text-xs font-bold uppercase tracking-wider ${theme.badge} px-2 py-1 rounded-md mb-2 inline-block">${t.aspect}</span>
+                            <h3 class="text-xl font-bold text-slate-800">${t.name}</h3>
+                        </div>
+                        <div class="p-5 flex-grow flex flex-col gap-3">
+                            <div>
+                                <span class="text-xs text-slate-400 font-bold uppercase block mb-1">Formula</span>
+                                <code class="bg-slate-100 text-pink-600 px-2 py-1 rounded text-sm font-mono block">${t.formula}</code>
+                            </div>
+                            <div>
+                                <span class="text-xs text-slate-400 font-bold uppercase block mb-1">When to Use</span>
+                                <p class="text-sm text-slate-700">${t.usage}</p>
+                            </div>
+                            <div class="mt-auto pt-3 border-t border-slate-100">
+                                <span class="text-xs text-slate-400 font-bold uppercase block mb-1">Example</span>
+                                <p class="text-sm italic font-medium text-slate-800">"${t.example}"</p>
+                            </div>
+                        </div>
+                        <div class="bg-slate-800 text-slate-200 p-3 text-sm text-center">
+                            <i class="fa-solid fa-lightbulb text-yellow-400 mr-1"></i> <strong>Tip:</strong> ${t.tip}
+                        </div>
+                    </div>
+                `;
+            });
+        }
+
+        // Timeline Visualization Logic
+        const descriptions = {
+            'simple': '<strong>Simple:</strong> Just the bare fact of the action (Habits, facts, completed events). Represented by a single point "X".',
+            'continuous': '<strong>Continuous:</strong> The action is/was/will be in progress. Represented by a wavy line indicating duration and movement.',
+            'perfect': '<strong>Perfect:</strong> Action connects two time points ("already done" by a certain time). Represented by a bracket spanning from an earlier time to the main point.',
+            'perfect-continuous': '<strong>Perfect Continuous:</strong> An ongoing action with duration connecting two times. Represented by a bracket combined with a wavy progress line.'
+        };
+
+        function updateTimeline(aspect) {
+            // Update Buttons
+            document.querySelectorAll('.timeline-btn').forEach(btn => {
+                btn.classList.remove('active', 'border-blue-500', 'bg-blue-100', 'text-blue-700');
+                btn.classList.add('bg-slate-100', 'text-slate-600', 'border-transparent');
+                
+                if(btn.dataset.aspect === aspect) {
+                    btn.classList.remove('bg-slate-100', 'text-slate-600', 'border-transparent');
+                    btn.classList.add('active', 'border-blue-500', 'bg-blue-100', 'text-blue-700');
+                }
+            });
+
+            // Update SVG Layers
+            const layers = ['simple', 'continuous', 'perfect', 'perfect-continuous'];
+            layers.forEach(l => {
+                const el = document.getElementById(`layer-${l}`);
+                if (l === aspect) {
+                    el.classList.remove('opacity-0');
+                    el.classList.add('opacity-100');
+                } else {
+                    el.classList.remove('opacity-100');
+                    el.classList.add('opacity-0');
+                }
+            });
+
+            // Update Description
+            document.getElementById('aspect-description').innerHTML = descriptions[aspect];
+        }
+
+        // Initialize
+        showTenseTab('present');
+
+    </script>
+</body>
+</html>
